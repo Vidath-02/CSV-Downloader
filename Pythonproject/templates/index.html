@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PickMe CSV Downloader</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <style>
+        /* Global styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFD200, #FF5B00); /* Vibrant background */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            height: 100vh;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        /* Form container styles */
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        .form-container img {
+            width: 100%;
+            height: auto;
+            max-width: 200px;
+            margin-bottom: 15px;
+        }
+
+        /* Label styles */
+        label {
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: inline-block;
+        }
+
+        /* Input and button styles */
+        input[type="text"], input[type="password"], input[type="number"], button {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, input[type="number"]:focus {
+            border-color: #FF5B00;
+            background-color: #fff3e0;
+        }
+
+        input[type="text"]:hover, input[type="password"]:hover, input[type="number"]:hover {
+            background-color: #ffebcc;
+        }
+
+        /* Button styles */
+        button {
+            background-color: #FF5B00;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 18px;
+            padding: 14px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #FFD200;
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Form hover effects */
+        .form-container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Small note styling */
+        .note {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        /* Responsive design for tablets and smaller devices */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .form-container {
+                width: 100%;
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            label {
+                font-size: 12px;
+            }
+
+            input[type="text"], input[type="password"], input[type="number"], button {
+                font-size: 14px;
+                padding: 10px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 12px;
+            }
+
+            .form-container img {
+                width: 120px;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .form-container {
+                padding: 15px;
+            }
+
+            input[type="text"], input[type="password"], input[type="number"], button {
+                font-size: 14px;
+                padding: 8px;
+            }
+
+            button {
+                font-size: 16px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <img src="/static/pick_me.png" alt="PickMe Logo">
+    <h1>PickMe CSV Downloader</h1>
+
+    <!-- Form for CSV download -->
+    <form action="/download_csv" method="post">
+        <!-- Database URL -->
+        <div>
+            <label for="data_source_url">Database URL:</label>
+            <input type="text" id="data_source_url" name="data_source_url" placeholder="jdbc:mysql://host:port/database" required>
+        </div>
+
+        <!-- Username -->
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+        </div>
+
+        <!-- Password -->
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+
+        <!-- Table Name -->
+        <div>
+            <label for="table_name">Table Name:</label>
+            <input type="text" id="table_name" name="table_name" placeholder="Enter the table name" required>
+        </div>
+
+        <!-- Columns (Optional) -->
+        <div>
+            <label for="columns">Columns (Optional, comma separated):</label>
+            <input type="text" id="columns" name="columns" placeholder="Enter column names (Optional)">
+        </div>
+
+        <!-- SQL Query (Optional) -->
+        <div>
+            <label for="sql_query">SQL Query (Optional):</label>
+            <input type="text" id="sql_query" name="sql_query" placeholder="Enter custom SQL query (Optional)">
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit">Download CSV</button>
+    </form>
+</div>
+
+</body>
+</html>
